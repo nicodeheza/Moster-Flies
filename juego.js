@@ -1,8 +1,9 @@
 
 let fondo;
 let samurai;
-let W=1920/1.5;
-let H= 1080/1.5;
+//let W=1920/1.5;
+//let H= 1080/1.5;
+let W,H;
 let p= 1;
 let camina,quieto,salta,gira,mVuela,mGira,mhMuere,mbMuere;
 let moscas;
@@ -12,6 +13,7 @@ let sMuerte,sEspada,sMosca;
 let sound;
 let on ,off;
 let mr;
+let sca;
 
 
 function preload(){
@@ -44,9 +46,13 @@ off= loadImage("assets/sonidos/off.png");
 }
 
 function setup(){
+     W= 84*windowWidth/100;
+     H= 56.25*W/100;
+
     createCanvas (W,H);
 //samurai
-    samurai= createSprite(W/2, H/2+100);
+    //samurai= createSprite(W/2, H/2+100);
+    samurai= createSprite(W/2, 64*H/100);
     samurai.addAnimation("camina",camina);
     samurai.addImage("quieto",quieto);
     samurai.addAnimation("salta",salta);
@@ -54,7 +60,9 @@ function setup(){
 
      samurai.setCollider("rectangle", 0, 0, 0, 0);
 
-    samurai.scale=0.60;
+    sca= map(W,0,1920/1.5,0,0.60);
+
+    samurai.scale=sca;
     //samurai.debug=true;
 
 //moscas
@@ -76,6 +84,7 @@ sound=false;
 }
 
 function draw(){
+   
     background(fondo);
 
     if (time===0){
@@ -97,8 +106,9 @@ function draw(){
   textSize(40);
  // textAlign(LEFT);
   fill(255,0,0);
-  text("Kills:"+" "+ muertes,10,H-50);
-  text("Time:"+" "+time,W-130,H-50);
+  text("Kills:"+" "+ muertes,0.81*W/100,92*H/100);
+  textAlign(RIGHT);
+  text("Time:"+" "+time,W-10,92*H/100);
 
   soundControl();
 
@@ -150,6 +160,7 @@ if(mouseY<samurai.position.y-75){
 }
 
 function mosMove(){
+let mVel=map(sca,0,0.6,0,2);
 for(i=0;i<moscas.length;i++){
     let mosca= moscas[i];
 
@@ -157,9 +168,9 @@ for(i=0;i<moscas.length;i++){
  
 
     if(mosca.mirrorX()<0){
-        mosca.velocity.x=+2
+        mosca.velocity.x=+mVel
     }else{
-        mosca.velocity.x=-2
+        mosca.velocity.x=-mVel
     }
    
    
@@ -172,26 +183,26 @@ for(i=0;i<moscas.length;i++){
 
      if (mosca.velocity.x>0){
         mosca.mirrorX(-1);
-        mosca.setCollider("rectangle",(-12*-1)*0.6,10*0.6,200*0.6,101*0.6);
+        mosca.setCollider("rectangle",(-12*-1)*sca,10*sca,200*sca,101*sca);
 
         }else{
             mosca.mirrorX(1);
-            mosca.setCollider("rectangle",-12*0.6,10*0.6,200*0.6,101*0.6);
+            mosca.setCollider("rectangle",-12*sca,10*sca,200*sca,101*sca);
         }
-if(mosca.velocity.y<2 &&mosca.velocity.y>-2){
+if(mosca.velocity.y<mVel &&mosca.velocity.y>-mVel){
     if(random(0,1)<0.5){
         //mosca.position.y+=3*sin(frameCount/100);
-    mosca.velocity.y=-2
+    mosca.velocity.y=-mVel;
  }else{
-     mosca.velocity.y=+2;
+     mosca.velocity.y=+mVel;
  }
 }
 
     if (mosca.position.y> H/2.5){
-       mosca.velocity.y=-2
+       mosca.velocity.y=-mVel
     }
 if(mosca.position.y<-50){
-   mosca.velocity.y=+2;
+   mosca.velocity.y=+mVel;
 }
 
     }
@@ -203,16 +214,16 @@ function mata (){
 if (samurai.getAnimationLabel ()=="salta"){
 
     if(samurai.animation.getFrame ()===8 || samurai.animation.getFrame ()===9){
-        samurai.setCollider("rectangle", (156*0.6)*p, -195*0.6, 178*0.6, 40*0.6);
+        samurai.setCollider("rectangle", (156*sca)*p, -195*sca, 178*sca, 40*sca);
         sss=true;
     }
 
      else if(samurai.animation.getFrame ()===10 || samurai.animation.getFrame ()===11){
-        samurai.setCollider("rectangle", (-35*0.6)*p, -325*0.6, 37*0.6, 182*0.6);  
+        samurai.setCollider("rectangle", (-35*sca)*p, -325*sca, 37*sca, 182*sca);  
     }
 
     else if(samurai.animation.getFrame ()===12 || samurai.animation.getFrame ()===13){
-        samurai.setCollider("rectangle", (-175*0.6)*p, -204*0.6, 24*0.6, 178*0.6);   
+        samurai.setCollider("rectangle", (-175*sca)*p, -204*sca, 24*sca, 178*sca);   
     }
     else{
         samurai.setCollider("rectangle", 0, 0, 0, 0);
@@ -244,14 +255,14 @@ function muere(s,m){
 
     if(mirr===-1){
 
-     cuerpo= createSprite(mosP.x, mosP.y+1);
-     cuerpo.addAnimation("muere",mbMuere);
-    cuerpo.scale=0.6;
+    cuerpo= createSprite(mosP.x, mosP.y+map(sca,0,0.6,0,1));
+    cuerpo.addAnimation("muere",mbMuere);
+    cuerpo.scale=sca;
     cuerpo.mirrorX(mirr);
 
-    cabeza= createSprite((mosP.x+56), mosP.y+16);
+    cabeza= createSprite((mosP.x+map(sca,0,0.6,0,56)), mosP.y+map(sca,0,0.6,0,16));
     cabeza.addAnimation("muere",mhMuere);
-    cabeza.scale=0.6;
+    cabeza.scale=sca;
     cabeza.mirrorX(mirr);
 
     cuerpo.addSpeed(10,100);
@@ -262,13 +273,13 @@ function muere(s,m){
 
     }else{ 
 
-    cuerpo= createSprite(mosP.x, mosP.y+1);
+    cuerpo= createSprite((mosP.x+map(sca,0,0.6,0,56)), mosP.y+map(sca,0,0.6,0,16));
     cuerpo.addAnimation("muere",mbMuere);
-    cuerpo.scale=0.6;   
+    cuerpo.scale=sca;   
 
-    cabeza= createSprite(mosP.x-56, mosP.y+16);
+    cabeza= createSprite(mosP.x, mosP.y+map(sca,0,0.6,0,1));
     cabeza.addAnimation("muere",mhMuere);
-    cabeza.scale=0.6;
+    cabeza.scale=sca;
 
     cuerpo.addSpeed(10,80);
     cabeza.addSpeed(10,100);
@@ -278,36 +289,37 @@ function muere(s,m){
 
     }
 
-    if(cabeza.position.y>H+150){
+    if(cabeza.position.y>H+map(sca,0,0.6,0,150)){
         cabeza.remove();
     }
-    if(cuerpo.position.y>H+150){
+    if(cuerpo.position.y>H+map(sca,0,0.6,0,150)){
         cuerpo.remove();
     }
  //nace 
 let nPos;
 if(random(0,1)<0.5){
-    nPos=-100;
+    nPos=map(sca,0,0.6,0,-100);
 }else{
-    nPos=W+100
+    nPos=W+map(sca,0,0.6,0,100);
 }
     var newMosca= createSprite(nPos,random(0,H/2.5));
     newMosca.addAnimation("Mvuela",mVuela);
     newMosca.addImage("mGira",mGira);
 
-    newMosca.setCollider("rectangle",-12,10,200,101);
+    newMosca.setCollider("rectangle",-12*sca,10*sca,200*sca,101*sca);
 
-    newMosca.scale=0.6;
+    newMosca.scale=sca;
     //newMosca.debug=true;
     
 let rot= random(0,1);
 if(rot<0.5){
     newMosca.mirrorX(-1);
-    newMosca.setCollider("rectangle",-12*-1,10,200,101);
-    newMosca.velocity.x=+2
+    newMosca.setCollider("rectangle",(-12*sca)*-1, 10*sca, 200*sca, 
+    101*sca);
+    newMosca.velocity.x=+map(sca,0,0.6,0,2);
 
 }else{
-    newMosca.velocity.x=-2;
+    newMosca.velocity.x=-map(sca,0,0.6,0,2);
 }
 
 
@@ -340,20 +352,21 @@ for(i=0;i<moscas.length;i++){
 
 if(moscas.length===0){
 
-    textSize(100);
+    textSize(map(W,0,1920/1.5,0,100));
     fill(255,0,0);
-    text("Game Over",(W/2)-200,(H/2)-50);
-    textSize(50);
-    text("RESTART",(W/2)-80,(H/2)-300)
+    text("Game Over",(W/2)-map(W,0,1920/1.5,0,200),(H/2)-map(W,0,1920/1.5,0,50));
+    textSize(map(W,0,1920/1.5,0,50));
+    text("RESTART",(W/2)-map(W,0,1920/1.5,0,80),(H/2)-map(W,0,1920/1.5,0,300));
 
     //noFill();
    // rect((W/2)-80,(H/2)-340,160,50);
 
-    if (mouseX<((W/2)-80)+160 && mouseX >(W/2)-80 && mouseY<((H/2)-340)+50 && mouseY>(H/2)-340){
+    if (mouseX<((W/2)-map(W,0,1920/1.5,0,80))+map(W,0,1920/1.5,0,160) && mouseX >(W/2)-map(W,0,1920/1.5,0,80)
+     && mouseY<((H/2)-map(W,0,1920/1.5,0,340))+map(W,0,1920/1.5,0,50) && mouseY>(H/2)-map(W,0,1920/1.5,0,340)){
 
-    textSize(50);
+    textSize(map(W,0,1920/1.5,0,50));
     fill(242, 241, 182);
-    text("RESTART",(W/2)-80,(H/2)-300);
+    text("RESTART",(W/2)-map(W,0,1920/1.5,0,80),(H/2)-map(W,0,1920/1.5,0,300));
 
 if(mouseIsPressed){
     start();
@@ -376,15 +389,15 @@ for(i=0;i<12;i++){
     mosca.addAnimation("Mvuela",mVuela);
     mosca.addImage("mGira",mGira);
 
-    mosca.setCollider("rectangle",-12,10,200,101);
+    mosca.setCollider("rectangle",-12*sca,10*sca,200*sca,101*sca);
 
-    mosca.scale=0.6;
-   // mosca.debug=true;
+    mosca.scale=sca;
+    //mosca.debug=true;
     
 let rot= random(0,1);
 if(rot<0.5){
     mosca.mirrorX(-1);
-    mosca.setCollider("rectangle",-12*-1,10,200,101);
+    mosca.setCollider("rectangle",(-12*sca)*-1, 10*sca,200*sca,101*sca);
    // mosca.velocity.x=+2
 
 }
@@ -436,3 +449,4 @@ function mouseReleased(){
     mr=true;
     
 }
+
