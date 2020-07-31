@@ -49,7 +49,9 @@ function setup(){
      W= 84*windowWidth/100;
      H= 56.25*W/100;
 
-    createCanvas (W,H);
+   var canvas= createCanvas (W,H);
+   canvas.parent('sk');
+
 //samurai
     //samurai= createSprite(W/2, H/2+100);
     samurai= createSprite(W/2, 64*H/100);

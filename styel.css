@@ -1,4 +1,8 @@
+*{
+  margin: 0px;
+  padding: 0px;
 
+}
 html, body {
     height: 100%;
     background-color:black;
@@ -7,21 +11,32 @@ html, body {
   body {
     margin: 0;
     display: flex;
-  
-    /* This centers our sketch horizontally. */
-    justify-content: center;
-  
-    /* This centers our sketch vertically. */
+ 
+   justify-content: center;
+
     align-items: center;
+ }
+
+  p{
+    font-family: 'Chewy', cursive;
+
   }
 
-  p{font-family: 'Chewy', cursive;}
+  @media only screen and (max-height: 500px){
+    #sk{
+  margin: auto ;
+  margin-top: 10%;
+  display: flex;
+  justify-content: center;
+  }
+}
 
   #p5_loading {
 
     font-size: 80px;
     font-family: 'Chewy', cursive;
-    text-align: center;
+    /*text-align: center;*/
+    vertical-align: middle;
     color: red;
-
+    
   }
