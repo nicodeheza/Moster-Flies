@@ -17,6 +17,7 @@ let sca;
 
 
 function preload(){
+    if (windowWidth>windowHeight){
 //fondo
 fondo=loadImage("assets/fondo.png");
 
@@ -41,11 +42,12 @@ sMosca= loadSound("assets/sonidos/moscas.wav");
 
 on= loadImage("assets/sonidos/on.png");
 off= loadImage("assets/sonidos/off.png");
-
+    }
 
 }
 
 function setup(){
+    if(windowWidth>windowHeight){
      W= 84*windowWidth/100;
      H= 56.25*W/100;
 
@@ -82,6 +84,9 @@ setInterval(timer,1000);
 
 //sonido 
 sound=false;
+    }else{
+        mensaje();
+    }
    
 }
 
@@ -452,3 +457,20 @@ function mouseReleased(){
     
 }
 
+function mensaje(){
+    createCanvas(windowWidth,windowHeight)
+
+    background(255,0,0);
+
+    textFont('Chewy');
+    textSize(40);
+     textAlign(CENTER,CENTER);
+     fill(255, 234, 0);
+     text("Please",windowWidth/2,windowHeight/3);
+     text("rotate your device",windowWidth/2,windowHeight/3+50);
+     text("and reload the page",windowWidth/2,windowHeight/3+100);
+     text("to play the game.",windowWidth/2,windowHeight/3+150);
+
+     noLoop();
+    
+}
